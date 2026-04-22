@@ -1,5 +1,4 @@
 <?php
-// app/Http/Middleware/AdminMiddleware.php
 
 namespace App\Http\Middleware;
 
@@ -11,15 +10,16 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
-            return $next($request);
+        // Cek apakah user sudah login
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
         
-        return redirect('/')->with('error', 'Akses ditolak! Hanya untuk admin.');
+        // Cek apakah role admin
+        if (Auth::user()->role !== 'admin') {
+            abort(403, 'Halaman ini hanya untuk admin');
+        }
+        
+        return $next($request);
     }
-
-protected $routeMiddleware = [
-    // ... middleware lainnya
-    'admin' => \App\Http\Middleware\AdminMiddleware::class,
-];
 }

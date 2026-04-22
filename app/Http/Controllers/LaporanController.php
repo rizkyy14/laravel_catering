@@ -134,7 +134,7 @@ class LaporanController extends Controller
     public function export(Request $request)
     {
         $type = $request->type; // harian/bulanan/tahunan
-        $format = $request->format(pdf); // pdf/excel
+        $format = $request->format(); // pdf/excel
         
         // Logika export berdasarkan type dan format
         // Bisa menggunakan package seperti maatwebsite/excel atau dompdf
